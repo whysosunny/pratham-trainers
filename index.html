@@ -190,6 +190,13 @@
             top: 10px;
         }
 
+        .email-error {
+            color: darkred;
+            margin-bottom: 20px;
+
+            asdfasdf
+        }
+
         @media (min-width: 800px) {
             .content-box {
                 max-width: 800px;
@@ -220,7 +227,7 @@
 <body>
 <div id="app">
     <div id="bg-img">
-        <img src="../../../../comingSoon_bg.jpg" alt="">
+        <img src="./comingSoon_bg.svg" alt="">
 
 
         <div class="content-box">
@@ -244,6 +251,10 @@
                     <strong class="form-label">
                         Want to receive a notification email when we're ready?
                     </strong>
+
+                    <div class="email-error" v-if="emailError">
+                        Please Enter a Valid Email Address
+                    </div>
                     <div>
                         <input v-if="!submitStatus" v-model="email" type="email" placeholder="Enter your email address">
                     </div>
@@ -275,21 +286,33 @@
         el: '#app',
         data: {
             email: "",
-            submitError: false,
+            emailError: false,
             submitStatus: false
         },
         methods: {
             submitForm: function (email) {
                 const that = this;
-                const url = "https://pratham-8d95f.firebaseio.com/mail_list.json";
-                const obj = {
-                    email: email,
-                    time: Date.now()
-                };
 
-                $.post(url, JSON.stringify(obj), function () {
-                    that.submitStatus = true;
-                });
+                function validateEmail(email) {
+                    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                    return re.test(String(email).toLowerCase());
+                }
+
+                if(validateEmail(email)) {
+                    that.emailError = false;
+                    const url = "https://pratham-8d95f.firebaseio.com/mail_list.json";
+                    const obj = {
+                        email: email,
+                        time: Date.now()
+                    };
+
+                    $.post(url, JSON.stringify(obj), function () {
+                        that.submitStatus = true;
+                    });
+                } else {
+                    that.emailError = true;
+                }
+
             }
         }
     })
