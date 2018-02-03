@@ -190,6 +190,10 @@
             top: 10px;
         }
 
+        [v-cloak] {
+            display: none;
+        }
+
         .email-error {
             color: darkred;
             margin-bottom: 20px;
@@ -258,7 +262,7 @@
                         Want to receive a notification email when we're ready?
                     </strong>
 
-                    <div class="email-error" v-if="emailError">
+                    <div v-cloak class="email-error" v-if="emailError">
                         Please Enter a Valid Email Address
                     </div>
                     <div>
@@ -269,7 +273,7 @@
 
                 <div class="btn-wrapper">
 
-                    <h4 v-if="submitStatus" class="submit-msg text-center">Thank you. You will be notified.</h4>
+                    <h4 v-cloak v-if="submitStatus" class="submit-msg text-center">Thank you. You will be notified.</h4>
                     <button v-if="!submitStatus" class="email-submit" type="button" @click="submitForm(email)">Submit
                     </button>
                 </div>
