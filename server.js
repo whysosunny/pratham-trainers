@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-var port = 9000;
+var port = 80;
 
 app.use(express.static(__dirname));
 
